@@ -1,0 +1,93 @@
+{
+  "manifest_version": 3,
+  "name": "WUKU 翻译 · 沉浸式网页翻译",
+  "version": "1.1.0",
+  "description": "整页翻译、划词翻译、双语对照；内置机器翻译，支持自定义 OpenAI 兼容接口与请求模板。",
+  "author": "WUKU",
+  "minimum_chrome_version": "110",
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://translate.googleapis.com/*",
+    "https://api.mymemory.translated.net/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "shared/core.js",
+        "shared/constants.js",
+        "shared/lang-detect.js",
+        "shared/settings.js",
+        "content/dom.js",
+        "content/ui.js",
+        "content/selection.js",
+        "content/ball.js",
+        "content/panel.js",
+        "content/subtitle.js",
+        "content/input.js",
+        "content/image.js",
+        "content/content.js"
+      ],
+      "css": [
+        "styles/content.css"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_title": "WUKU 翻译",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "toggle-translate": {
+      "suggested_key": {
+        "default": "Alt+Shift+T"
+      },
+      "description": "翻译 / 恢复当前页面"
+    },
+    "translate-selection": {
+      "suggested_key": {
+        "default": "Alt+Shift+S"
+      },
+      "description": "翻译当前选中的文本"
+    },
+    "translate-input": {
+      "suggested_key": {
+        "default": "Alt+Shift+I"
+      },
+      "description": "翻译当前输入框中的内容"
+    }
+  }
+}
