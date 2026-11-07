@@ -1,0 +1,32 @@
+/* 双语对照模式下插入的译文块（页面样式可能会覆盖，故使用 !important） */
+.wuku-bi,
+[data-wuku="bi"] {
+  display: block !important;
+  margin: 0.25em 0 0.15em !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  font-style: normal !important;
+  font-weight: inherit !important;
+  text-align: inherit !important;
+  text-indent: 0 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  opacity: 0.92;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+
+.wuku-bi::before {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-right: 6px;
+  vertical-align: -0.08em;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #4f7cff, #8a4fff);
+  opacity: 0.55;
+}

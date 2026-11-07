@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WUKU 翻译</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo" aria-hidden="true">译</div>
+    <div class="titles">
+      <div class="title">WUKU 翻译</div>
+      <div class="host" id="host">正在读取当前页面…</div>
+    </div>
+    <button class="ghost" id="openOptions" type="button" title="打开设置页">设置</button>
+  </header>
+
+  <main class="main">
+    <section class="status" id="statusCard">
+      <div class="status-row">
+        <span class="dot" id="statusDot"></span>
+        <span class="status-text" id="statusText">检测页面语言…</span>
+      </div>
+      <div class="status-meta" id="statusMeta"></div>
+    </section>
+
+    <section class="segmented" id="modeGroup" role="tablist" aria-label="显示模式">
+      <button type="button" data-mode="immersive" role="tab">纯译文</button>
+      <button type="button" data-mode="bilingual" role="tab">双语对照</button>
+    </section>
+
+    <button class="primary" id="primary" type="button">翻译整页</button>
+    <button class="secondary" id="restore" type="button" disabled>恢复原文</button>
+
+    <div class="field">
+      <label for="engine">本站翻译引擎</label>
+      <select id="engine"></select>
+    </div>
+
+    <div class="notice" id="permissionNotice" hidden>
+      <span id="permissionText"></span>
+      <button type="button" id="grantPermission">授权访问</button>
+    </div>
+
+    <label class="switch">
+      <input type="checkbox" id="skipChinese" />
+      <span class="track"><span class="knob"></span></span>
+      <span class="switch-label">仅翻译非中文页面</span>
+    </label>
+
+    <section class="quick" aria-label="快捷功能">
+      <div class="quick-title">快捷功能</div>
+      <button class="secondary wide" id="openPanel" type="button">打开翻译面板</button>
+      <label class="switch">
+        <input type="checkbox" id="floatBall" />
+        <span class="track"><span class="knob"></span></span>
+        <span class="switch-label">悬浮球</span>
+      </label>
+      <label class="switch">
+        <input type="checkbox" id="subtitle" />
+        <span class="track"><span class="knob"></span></span>
+        <span class="switch-label">视频双语字幕</span>
+      </label>
+      <label class="switch">
+        <input type="checkbox" id="inputTrans" />
+        <span class="track"><span class="knob"></span></span>
+        <span class="switch-label">输入框翻译（三连空格触发）</span>
+      </label>
+      <label class="switch">
+        <input type="checkbox" id="imageTrans" />
+        <span class="track"><span class="knob"></span></span>
+        <span class="switch-label">漫画 / 图片翻译（右键图片）</span>
+      </label>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span id="cacheInfo">缓存统计读取中…</span>
+    <a href="#" id="shortcuts">快捷键</a>
+  </footer>
+
+  <script src="../shared/core.js"></script>
+  <script src="../shared/constants.js"></script>
+  <script src="../shared/settings.js"></script>
+  <script src="../shared/net.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

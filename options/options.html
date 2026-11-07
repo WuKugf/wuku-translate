@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WUKU 翻译 · 设置</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail">
+      <div class="brand">
+        <div class="brand-logo">译</div>
+        <div>
+          <div class="brand-name">WUKU 翻译</div>
+          <div class="brand-sub">沉浸式网页翻译 · v1.1.0</div>
+        </div>
+      </div>
+      <nav class="nav" id="nav">
+        <button type="button" data-tab="general" aria-selected="true">通用设置</button>
+        <button type="button" data-tab="features" aria-selected="false">增强功能</button>
+        <button type="button" data-tab="ai" aria-selected="false">AI 接口</button>
+        <button type="button" data-tab="custom" aria-selected="false">自定义接口</button>
+        <button type="button" data-tab="sites" aria-selected="false">站点规则</button>
+        <button type="button" data-tab="data" aria-selected="false">缓存与数据</button>
+        <button type="button" data-tab="guide" aria-selected="false">使用教程</button>
+        <button type="button" data-tab="changelog" aria-selected="false">更新日志</button>
+        <button type="button" data-tab="about" aria-selected="false">关于</button>
+      </nav>
+      <div class="rail-foot">
+        <span>作者 WUKU</span>
+        <button type="button" class="link" id="openShortcuts">快捷键设置</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <!-- 通用 -->
+      <section class="panel" data-panel="general">
+        <header class="panel-head">
+          <h1>通用设置</h1>
+          <p>决定整页翻译的默认行为。单个站点可在「站点规则」中单独覆盖。</p>
+        </header>
+
+        <div class="card">
+          <div class="card-title">翻译行为</div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="mode">默认显示模式</label>
+              <select id="mode">
+                <option value="immersive">纯译文（直接替换原文）</option>
+                <option value="bilingual">双语对照（原文 + 译文）</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="engine">默认翻译引擎</label>
+              <select id="engine"></select>
+            </div>
+            <div class="field">
+              <label for="targetLang">目标语言</label>
+              <select id="targetLang">
+                <option value="zh-CN">简体中文</option>
+                <option value="zh-TW">繁体中文</option>
+                <option value="en">English</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="chunkSize">每批段落数</label>
+              <input type="number" id="chunkSize" min="4" max="30" step="1" />
+              <p class="hint">越大越快，但更容易触发接口限流。建议 12。</p>
+            </div>
+          </div>
+
+          <label class="switch">
+            <input type="checkbox" id="skipChinesePage" />
+            <span class="track"><span class="knob"></span></span>
+            <span>
+              <strong>仅翻译非中文页面</strong>
+              <em>检测到页面主体已是中文时直接跳过，避免无意义请求。</em>
+            </span>
+          </label>
+
+          <label class="switch">
+            <input type="checkbox" id="fallback" />
+            <span class="track"><span class="knob"></span></span>
+            <span>
+              <strong>接口失败时自动降级</strong>
+              <em>AI 或主引擎不可用时，自动切换到 Google / MyMemory 免费线路。</em>
+            </span>
+          </label>
+        </div>
+
+        <div class="card">
+          <div class="card-title">划词翻译</div>
+          <label class="switch">
+            <input type="checkbox" id="bubbleEnabled" />
+            <span class="track"><span class="knob"></span></span>
+            <span>
+              <strong>选中文本后显示翻译气泡</strong>
+              <em>气泡内可复制译文、朗读、临时切换引擎。</em>
+            </span>
+          </label>
+          <div class="field inline">
+            <label for="bubbleEngine">气泡默认引擎</label>
+            <select id="bubbleEngine"></select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="primary" id="saveGeneral">保存通用设置</button>
+          <span class="save-hint" id="generalHint"></span>
+        </div>
+      </section>
+
+      <!-- 增强功能 -->
+      <section class="panel" data-panel="features" hidden>
+        <header class="panel-head">
+          <h1>增强功能</h1>
+          <p>悬浮球、视频双语字幕、输入框翻译与漫画图片翻译，均可独立开关。</p>
+        </header>
+
+        <div class="card">
+          <div class="card-title">悬浮球</div>
+          <label class="switch">
+            <input type="checkbox" id="ballEnabled" />
+            <span class="track"><span class="knob"></span></span>
+            <span>
+              <strong>在页面边缘显示悬浮球</strong>
+              <em>点击展开菜单：翻译页面 / 双语对照 / 显示原文 / 翻译面板；可拖动换边。</em>
+            </span>
+          </label>
+          <div class="grid-2">
+            <label class="switch compact">
+              <input type="checkbox" id="ballTranslucent" />
+              <span class="track"><span class="knob"></span></span>
+              <span><strong>半透明胶囊</strong><em>毛玻璃质感，不遮挡内容。</em></span>
+            </label>
+            <label class="switch compact">
+              <input type="checkbox" id="ballPinned" />
+              <span class="track"><span class="knob"></span></span>
+              <span><strong>始终置顶</strong><em>置于页面元素之上。</em></span>
+            </label>
+          </div>
+          <div class="field inline">
+            <label for="ballSide">默认贴边</label>
+            <select id="ballSide">
+              <option value="right">右侧</option>
+              <option value="left">左侧</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">视频双语字幕</div>
+          <label class="switch">
+            <input type="checkbox" id="subtitleEnabled" />
+            <span class="track"><span class="knob"></span></span>
+            <span>
+              <strong>为在线视频生成沉浸式双语字幕</strong>
+              <em>内置支持 YouTube、Netflix、B 站、Disney+、Prime Video，实时在字幕下方追加译文。</em>
+            </span>
+          </label>
+          <label class="switch compact">
+            <input type="checkbox" id="subtitleBilingual" />
+            <span class="track"><span class="knob"></span></span>
+            <span><strong>双语对照</strong><em>关闭后隐藏原字幕，仅显示译文。</em></span>
+          </label>
+          <div class="field">
+            <label for="subtitleSelectors">自定义字幕容器（每行一条：<code>域名片段 | CSS选择器</code>）</label>
+            <textarea id="subtitleSelectors" rows="3" spellcheck="false" placeholder="www.example.com | .caption-text"></textarea>
+            <p class="hint">仅当内置规则不生效时才需要填写。</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">输入框翻译</div>
+          <label class="switch">
+            <input type="checkbox" id="inputEnabled" />
+            <span class="track"><span class="knob"></span></span>
+            <span>
+              <strong>在输入框中快速翻译</strong>
+              <em>在任意输入框结尾连敲 3 次空格，或按 Alt+Shift+I，即把内容译为外文。</em>
+            </span>
+          </label>
+          <div class="grid-2">
+            <div class="field">
+              <label for="inputTargetLang">翻译成</label>
+              <select id="inputTargetLang">
+                <option value="en">English</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="inputMode">写回方式</label>
+              <select id="inputMode">
+                <option value="replace">替换原文</option>
+                <option value="append">追加到原文后</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">漫画 / 图片翻译</div>
+          <label class="switch">
+            <input type="checkbox" id="imageEnabled" />
+            <span class="track"><span class="knob"></span></span>
+            <span>
+              <strong>右键图片 → 翻译图片文字</strong>
+              <em>调用 AI 视觉模型识别图中文字，以浮层形式显示原文与译文。需先在「AI 接口」完成配置。</em>
+            </span>
+          </label>
+          <div class="grid-2">
+            <div class="field">
+              <label for="imageModel">视觉模型（可选）</label>
+              <input type="text" id="imageModel" placeholder="留空使用 AI 接口页配置的模型" spellcheck="false" />
+            </div>
+            <div class="field">
+              <label for="imageTargetLang">目标语言</label>
+              <select id="imageTargetLang">
+                <option value="zh-CN">简体中文</option>
+                <option value="zh-TW">繁体中文</option>
+                <option value="en">English</option>
+                <option value="ja">日本語</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="imageOrigin">图片域名授权</label>
+            <div class="rule-form">
+              <input type="text" id="imageOrigin" placeholder="https://cdn.example.com" spellcheck="false" />
+              <button type="button" class="secondary" id="grantImageOrigin">授权</button>
+            </div>
+            <p class="hint">跨站图片需要授权后才能下载识别，仅需对图床域名授权一次。</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="primary" id="saveFeatures">保存增强功能</button>
+          <span class="save-hint" id="featuresHint"></span>
+        </div>
+      </section>
+
+      <!-- AI -->
+      <section class="panel" data-panel="ai" hidden>
+        <header class="panel-head">
+          <h1>AI 接口</h1>
+          <p>兼容 OpenAI Chat Completions 的任意服务（OpenAI、DeepSeek、Moonshot、通义、火山方舟、Ollama、OneAPI 等）。</p>
+        </header>
+
+        <div class="card">
+          <div class="card-title">连接参数</div>
+          <div class="field">
+            <label for="aiBaseUrl">接口地址（Base URL）</label>
+            <input type="text" id="aiBaseUrl" placeholder="https://api.openai.com/v1" spellcheck="false" />
+            <p class="hint">填写到 <code>/v1</code> 层级即可；插件会自动拼上 <code>/chat/completions</code>。若你填的是完整地址也会原样使用。</p>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="aiApiKey">API Key</label>
+              <input type="password" id="aiApiKey" placeholder="sk-..." spellcheck="false" autocomplete="off" />
+              <p class="hint">仅保存在本机 chrome.storage，不会上传到任何第三方。</p>
+            </div>
+            <div class="field">
+              <label for="aiModel">模型名称</label>
+              <input type="text" id="aiModel" placeholder="gpt-4o-mini" spellcheck="false" />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="aiTemperature">温度 <span class="value" id="aiTemperatureValue">0.2</span></label>
+              <input type="range" id="aiTemperature" min="0" max="1.5" step="0.05" />
+              <p class="hint">翻译建议 0 ~ 0.3，过高会自由发挥。</p>
+            </div>
+            <div class="field">
+              <label for="aiBatchSize">每批条数</label>
+              <input type="number" id="aiBatchSize" min="1" max="40" step="1" />
+              <p class="hint">一次请求翻译多少段，越大越省调用次数。</p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="aiExtraHeaders">额外请求头（JSON，可选）</label>
+            <textarea id="aiExtraHeaders" rows="2" spellcheck="false" placeholder='{ "X-Title": "WUKU Translate" }'></textarea>
+            <p class="hint">用于需要额外鉴权头的服务，例如 <code>api-key</code>、<code>HTTP-Referer</code>。</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="aiJsonMode" />
+            <span class="track"><span class="knob"></span></span>
+            <span>
+              <strong>要求模型返回 JSON 数组</strong>
+              <em>批量翻译更稳；若你的服务不支持，可关闭改用逐行返回。</em>
+            </span>
+          </label>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            系统提示词
+            <button type="button" class="link" id="resetPrompt">恢复默认</button>
+          </div>
+          <textarea id="aiPrompt" rows="10" spellcheck="false"></textarea>
+          <p class="hint">可用占位符：<code>{{targetLangName}}</code>。批量模式下用户消息是 JSON 字符串数组，因此提示词中已要求「等长同序返回」。</p>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="primary" id="saveAi">保存并授权域名</button>
+          <button type="button" class="secondary" id="testAi">测试连接</button>
+          <span class="save-hint" id="aiHint"></span>
+        </div>
+        <div class="result" id="aiResult" hidden></div>
+
+        <div class="card subtle">
+          <div class="card-title">配置示例</div>
+          <table class="example-table">
+            <thead><tr><th>服务</th><th>Base URL</th><th>模型</th></tr></thead>
+            <tbody>
+              <tr><td>OpenAI</td><td><code>https://api.openai.com/v1</code></td><td><code>gpt-4o-mini</code></td></tr>
+              <tr><td>DeepSeek</td><td><code>https://api.deepseek.com/v1</code></td><td><code>deepseek-chat</code></td></tr>
+              <tr><td>Moonshot</td><td><code>https://api.moonshot.cn/v1</code></td><td><code>moonshot-v1-8k</code></td></tr>
+              <tr><td>Ollama（本地）</td><td><code>http://localhost:11434/v1</code></td><td><code>qwen2.5:7b</code></td></tr>
+              <tr><td>OneAPI / 中转</td><td><code>https://your-proxy.com/v1</code></td><td>按服务商提供</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 自定义接口 -->
+      <section class="panel" data-panel="custom" hidden>
+        <header class="panel-head">
+          <h1>自定义接口</h1>
+          <p>用模板完全掌控请求与响应，可接入 LibreTranslate、自建代理、第三方聚合服务等。</p>
+        </header>
+
+        <div class="card">
+          <div class="card-title">请求定义</div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="customUrl">请求地址</label>
+              <input type="text" id="customUrl" placeholder="https://libretranslate.com/translate" spellcheck="false" />
+            </div>
+            <div class="field">
+              <label for="customMethod">请求方法</label>
+              <select id="customMethod">
+                <option value="POST">POST</option>
+                <option value="GET">GET</option>
+                <option value="PUT">PUT</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="customHeaders">请求头（JSON）</label>
+            <textarea id="customHeaders" rows="3" spellcheck="false"></textarea>
+          </div>
+          <div class="field">
+            <label for="customBody">请求体模板</label>
+            <textarea id="customBody" rows="8" spellcheck="false" class="mono"></textarea>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="customResponsePath">响应解析路径</label>
+              <input type="text" id="customResponsePath" placeholder="translatedText" spellcheck="false" />
+              <p class="hint">支持 <code>a.b[0].c</code> 形式；指向字符串或字符串数组。</p>
+            </div>
+            <div class="field">
+              <label>批量模式</label>
+              <label class="switch compact">
+                <input type="checkbox" id="customBatch" />
+                <span class="track"><span class="knob"></span></span>
+                <span><strong>一次请求多段文本</strong><em>需在请求体里使用 <code>{{texts}}</code></em></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card subtle">
+          <div class="card-title">可用占位符</div>
+          <ul class="placeholder-list">
+            <li><code>{{text}}</code><span>当前单段文本（已做 JSON 转义，不含外层引号）</span></li>
+            <li><code>{{texts}}</code><span>批量文本的 JSON 数组，如 <code>["a","b"]</code></span></li>
+            <li><code>{{textsPlain}}</code><span>批量文本按换行拼接的纯文本</span></li>
+            <li><code>{{sourceLang}}</code><span>检测到的源语言，如 <code>en</code></span></li>
+            <li><code>{{targetLang}}</code><span>目标语言，如 <code>zh-CN</code></span></li>
+            <li><code>{{targetLangName}}</code><span>目标语言中文名</span></li>
+            <li><code>{{model}}</code> / <code>{{apiKey}}</code> / <code>{{temperature}}</code><span>复用上方 AI 参数</span></li>
+            <li><code>{{systemPrompt}}</code><span>上方系统提示词（已转义）</span></li>
+          </ul>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="primary" id="saveCustom">保存并授权域名</button>
+          <button type="button" class="secondary" id="testCustom">测试连接</button>
+          <span class="save-hint" id="customHint"></span>
+        </div>
+        <div class="result" id="customResult" hidden></div>
+      </section>
+
+      <!-- 站点规则 -->
+      <section class="panel" data-panel="sites" hidden>
+        <header class="panel-head">
+          <h1>站点规则</h1>
+          <p>按域名覆盖引擎与显示模式。匹配越具体的规则优先，例如 <code>example.com</code> 同时匹配其子域名。</p>
+        </header>
+
+        <div class="card">
+          <div class="card-title">新增规则</div>
+          <div class="rule-form">
+            <input type="text" id="rulePattern" placeholder="example.com 或 *.example.com/path" spellcheck="false" />
+            <select id="ruleEngine"></select>
+            <select id="ruleMode">
+              <option value="">跟随全局模式</option>
+              <option value="immersive">纯译文</option>
+              <option value="bilingual">双语对照</option>
+            </select>
+            <button type="button" class="secondary" id="addRule">添加</button>
+          </div>
+          <p class="hint" id="ruleHint"></p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">已配置规则</div>
+          <div class="rule-list" id="ruleList"></div>
+        </div>
+      </section>
+
+      <!-- 数据 -->
+      <section class="panel" data-panel="data" hidden>
+        <header class="panel-head">
+          <h1>缓存与数据</h1>
+          <p>译文缓存会跨站点复用，减少重复请求；所有数据仅保存在本机。</p>
+        </header>
+
+        <div class="card">
+          <div class="card-title">翻译缓存</div>
+          <div class="stat-grid" id="cacheStats">
+            <div class="stat"><span class="stat-value">—</span><span class="stat-label">缓存条数</span></div>
+            <div class="stat"><span class="stat-value">—</span><span class="stat-label">字符占用</span></div>
+            <div class="stat"><span class="stat-value">—</span><span class="stat-label">命中次数</span></div>
+            <div class="stat"><span class="stat-value">—</span><span class="stat-label">未命中次数</span></div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="cacheEnabled" />
+            <span class="track"><span class="knob"></span></span>
+            <span><strong>启用翻译缓存</strong><em>关闭后每次都会重新请求接口。</em></span>
+          </label>
+          <div class="field inline">
+            <label for="cacheMaxEntries">缓存上限（条）</label>
+            <input type="number" id="cacheMaxEntries" min="200" max="10000" step="100" />
+          </div>
+          <div class="actions">
+            <button type="button" class="secondary" id="saveCache">保存缓存设置</button>
+            <button type="button" class="danger" id="clearCache">清空缓存</button>
+            <span class="save-hint" id="cacheHint"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">重置</div>
+          <p class="hint">恢复出厂设置会清除所有配置（包括 API Key）与站点规则，但不会删除已翻译缓存。</p>
+          <button type="button" class="danger" id="resetAll">恢复默认设置</button>
+        </div>
+      </section>
+
+      <!-- 使用教程 -->
+      <section class="panel" data-panel="guide" hidden>
+        <header class="panel-head">
+          <h1>使用教程</h1>
+          <p>三分钟上手 WUKU 翻译的全部功能。</p>
+        </header>
+
+        <div class="card">
+          <div class="card-title">1. 翻译网页</div>
+          <ul class="feature-list">
+            <li>点击工具栏图标 →「翻译整页」，或按 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>。</li>
+            <li>弹窗中可在「纯译文 / 双语对照」之间切换，切换后立即重译当前页。</li>
+            <li>右键菜单同样提供「翻译当前页面 / 双语对照 / 恢复原文」。</li>
+            <li>中文页面默认跳过，可在提示条中点「仍然翻译」强制执行。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">2. 划词翻译</div>
+          <ul class="feature-list">
+            <li>选中任意文本，旁边会弹出翻译气泡。</li>
+            <li>气泡内可切换引擎、复制译文、朗读；按 <kbd>Esc</kbd> 关闭。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">3. 悬浮球</div>
+          <ul class="feature-list">
+            <li>默认显示在页面右侧边缘，半透明胶囊样式。</li>
+            <li>单击展开菜单：翻译页面、双语对照、显示原文、打开翻译面板、视频字幕开关。</li>
+            <li>按住拖动可换到左侧或调整上下位置，位置会自动记忆。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">4. 翻译面板</div>
+          <ul class="feature-list">
+            <li>从悬浮球菜单或弹窗「打开翻译面板」进入。</li>
+            <li>左侧输入原文，650ms 后自动出译文；可手动选引擎与目标语言。</li>
+            <li>支持复制译文与朗读，按 <kbd>Esc</kbd> 收起。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">5. 视频双语字幕</div>
+          <ul class="feature-list">
+            <li>在弹窗或「增强功能」中开启后，播放支持站点的视频即可看到双语字幕。</li>
+            <li>内置支持 YouTube、Netflix、B 站、Disney+、Prime Video；其他站点可填自定义选择器。</li>
+            <li>需要视频本身已开启字幕（CC）。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">6. 输入框翻译</div>
+          <ul class="feature-list">
+            <li>在任意输入框（含评论框、搜索框、富文本编辑器）输入中文。</li>
+            <li>结尾连敲 <strong>3 次空格</strong>，或按 <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd>，内容即刻译为英文（可配置）。</li>
+            <li>写回方式可选「替换原文」或「追加到原文后」。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">7. 漫画 / 图片翻译</div>
+          <ul class="feature-list">
+            <li>需先在「AI 接口」配置支持视觉的模型（如 gpt-4o、qwen-vl-max 等）。</li>
+            <li>在漫画或截图上<strong>右键 → 翻译图片文字</strong>。</li>
+            <li>首次翻译跨站图片时按提示授权图床域名；译文以浮层形式覆盖在图片上，可随页面滚动。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">8. AI 接口配置</div>
+          <ul class="feature-list">
+            <li>支持任意 OpenAI 兼容服务：OpenAI、DeepSeek、Moonshot、通义、Ollama、OneAPI 中转等。</li>
+            <li>填 Base URL 与 API Key → 保存并授权域名 → 测试连接，绿色译文即配置成功。</li>
+            <li>AI 不可用时自动降级到免费线路，不断档。</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 更新日志 -->
+      <section class="panel" data-panel="changelog" hidden>
+        <header class="panel-head">
+          <h1>更新日志</h1>
+          <p>记录每个版本的功能与修复。</p>
+        </header>
+
+        <div class="card">
+          <div class="card-title">v1.1.0 <span class="tag">2026-11-07</span></div>
+          <ul class="feature-list">
+            <li><strong>悬浮球</strong>：半透明胶囊、可拖动换边、置顶显示，菜单一键直达翻译 / 双语 / 原文 / 翻译面板。</li>
+            <li><strong>翻译面板</strong>：页面右侧抽屉，输入即译，支持复制与朗读。</li>
+            <li><strong>视频双语字幕</strong>：沉浸式双语字幕，内置 YouTube / Netflix / B 站等站点适配，支持自定义容器。</li>
+            <li><strong>输入框翻译</strong>：三连空格或 Alt+Shift+I 把输入内容译为外文。</li>
+            <li><strong>漫画 / 图片翻译</strong>：AI 视觉识别图中文字，浮层显示对照译文。</li>
+            <li>新增「使用教程」「更新日志」页与弹窗快捷开关。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">v1.0.0 <span class="tag">2026-11-06</span></div>
+          <ul class="feature-list">
+            <li>整页翻译：保留 DOM 结构，渐进渲染，进度提示与中断续译。</li>
+            <li>划词翻译气泡：复制 / 朗读 / 临时切换引擎。</li>
+            <li>双语对照模式与站点规则。</li>
+            <li>AI 翻译（OpenAI 兼容）+ 自定义请求模板，失败自动降级。</li>
+            <li>翻译缓存、语言检测、快捷键与右键菜单。</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 关于 -->
+      <section class="panel" data-panel="about" hidden>
+        <header class="panel-head">
+          <h1>关于 WUKU 翻译</h1>
+          <p>一个免构建、权限克制的 Chrome 网页翻译扩展。</p>
+        </header>
+
+        <div class="card">
+          <div class="card-title">功能概览</div>
+          <ul class="feature-list">
+            <li><strong>整页翻译</strong>：自动识别页面语言，保留 DOM 结构与行内标签。</li>
+            <li><strong>划词翻译</strong>：选中文本弹出气泡，可复制、朗读、切换引擎。</li>
+            <li><strong>双语对照</strong>：原文上/下方插入译文，可随时切回纯译文或原文。</li>
+            <li><strong>悬浮球 + 翻译面板</strong>：页面边缘胶囊入口，抽屉式即输即译面板。</li>
+            <li><strong>视频双语字幕</strong>：主流视频站沉浸式双语字幕。</li>
+            <li><strong>输入框翻译</strong>：三连空格把中文输入即时译为外文。</li>
+            <li><strong>漫画图片翻译</strong>：AI 视觉识别，右键一键翻译图中文字。</li>
+            <li><strong>AI 翻译</strong>：OpenAI 兼容接口与自定义请求模板，提示词可编辑。</li>
+            <li><strong>站点规则</strong>：不同网站用不同引擎与显示模式。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">快捷键</div>
+          <table class="example-table">
+            <tbody>
+              <tr><td><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd></td><td>翻译 / 恢复当前页面</td></tr>
+              <tr><td><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></td><td>翻译当前选中文本</td></tr>
+              <tr><td><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd></td><td>翻译当前输入框内容</td></tr>
+            </tbody>
+          </table>
+          <p class="hint">可在 <code>chrome://extensions/shortcuts</code> 中修改。</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">权限说明</div>
+          <ul class="feature-list">
+            <li><code>storage</code>：保存配置与翻译缓存。</li>
+            <li><code>contextMenus</code> / <code>activeTab</code> / <code>scripting</code>：右键菜单、快捷键与按需注入页面脚本。</li>
+            <li><code>translate.googleapis.com</code> / <code>api.mymemory.translated.net</code>：内置免费机器翻译线路。</li>
+            <li>AI 接口域名：不预先申请，保存配置时按域名单独授权（<code>optional_host_permissions</code>）。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">隐私</div>
+          <p class="hint">插件不含统计与埋点。开启机器翻译时，待翻译文本会发送到对应免费接口；使用 AI 时发送到你自己配置的服务地址。配置与 Key 只存在于本机浏览器存储。</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../shared/core.js"></script>
+  <script src="../shared/constants.js"></script>
+  <script src="../shared/settings.js"></script>
+  <script src="../shared/net.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
